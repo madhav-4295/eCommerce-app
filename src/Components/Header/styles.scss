@@ -1,0 +1,28 @@
+.header{
+    height: 7rem;
+    box-shadow: 0px 2px 4px 0px rgb(0, 0, .1);
+
+    .wrapper{
+        position: relative;
+        height: 100%; // has to be of same height as of parent
+        max-width: 1450px;
+        margin: 0 auto;
+        // background-color:rgb(161, 56, 56);
+    }
+    .logo{
+        // background-color: green;
+        width: 13.0rem;
+        height: 7.5rem;
+        position: absolute;
+        top: -12%;
+        left: 500px;
+        bottom: -12%;
+        transform: translateY(50%);
+        transform: translateX(50%);
+    }
+    img{
+        width: 100px;
+        display: block;
+        height: 90px;
+    }
+}

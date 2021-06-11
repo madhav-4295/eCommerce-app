@@ -1,9 +1,16 @@
-
 import React from "react";
+import Header from "./Components/Header";
+import HomePage from "./Pages/HomePage";
+import "./default.scss";
 function App() {
   return (
     <div className="App">
-      <h2> hello world</h2>
+      <Header />
+
+      {/* centering the content with classname main */}
+      <div className="main">
+        <HomePage />
+      </div>
     </div>
   );
 }
