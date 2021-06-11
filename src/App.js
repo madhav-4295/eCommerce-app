@@ -1,16 +1,36 @@
 import React from "react";
-import Header from "./Components/Header";
+// import Header from "./Components/Header";
+import MainLayout from "./../src/Layouts/mainLayout"
 import HomePage from "./Pages/HomePage";
+import Registeration from "./Pages/Registeration";
+import {Route, Switch} from "react-router-dom"
+
 import "./default.scss";
 function App() {
   return (
     <div className="App">
-      <Header />
+      {/* <Header /> */}
+      {/* centering the content with class */}
+      {/* <div className="main"> */}
+        <Switch>
+        <Route path ="/" exact render={()=>(
+          <MainLayout>
+            <HomePage />
+          </MainLayout>
+        )} />
+        <Route path ="/Registeration" render={()=>(
+          <MainLayout>
+            <Registeration />
+          </MainLayout>
+        )} />
 
-      {/* centering the content with classname main */}
-      <div className="main">
-        <HomePage />
-      </div>
+        </Switch>
+
+        {/* <HomePage />
+        <Registeration /> */}
+
+      {/* </div> */}
+
     </div>
   );
 }
