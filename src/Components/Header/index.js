@@ -22,7 +22,7 @@ const Header = (props) => {
           {currentUser && (
             <ul>
               <li>
-                <span onClick={()=>auth.signOut()}>Logout</span> 
+                <Link onClick={()=>auth.signOut()}>Logout</Link> 
                 {/* this wont directly update the state of our current user, hence in app.js restore 
                     the current user state to initila state i.e. null*/}
               </li>

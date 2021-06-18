@@ -1,13 +1,11 @@
 import React,{Component} from "react"
 import "./styles.scss"
-
+import SignUp from "./../../Components/SignUp"
 class Registeration extends Component{
 
     render(){
         return(
-            <div>
-                <h2>Register</h2>
-            </div>
+            < SignUp />
         )
     }
 }

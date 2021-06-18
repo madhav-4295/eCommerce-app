@@ -15,9 +15,23 @@
             font-weight: 400;
             text-transform: uppercase;
             text-align: center;
-            margin: 0 auto;
+            margin: 0 auto 2rem;
             padding: 0;
             display: block;
+        }
+        ul{
+            list-style: none;
+            // margin-right: auto;
+            margin-left: auto;
+            
+            li{
+                text-align: left;
+                letter-spacing:1px;
+                line-height: 1;
+                font-weight: 400;
+                font-size: 20px;
+                color: red;
+            }
         }
         .socialSignIn{
             margin: 1rem auto 0rem;
