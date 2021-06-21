@@ -38,8 +38,8 @@ class SignIn extends Component {
       this.setState({ ...initialState });
     } catch (err) {
       console.error(err);
-      const err1 = [err.message];
-      this.setState({ errors: [err.message] });
+      const err1 = ["Password is invalid"];
+      // this.setState({ errors: [err1] });
     }
   };
   render() {
@@ -75,7 +75,7 @@ class SignIn extends Component {
                 </ul>
               )}
 
-              <Button type="submit"> Login</Button>
+              <Button type="submit">Login</Button>
 
               <div className="socialSignIn">
                 <div className="row">
