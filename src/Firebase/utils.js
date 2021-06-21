@@ -2,7 +2,6 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import { fireBaseConfig } from "./config";
-import { useReducer, useRef } from "react";
 
 //connect to firebase database
 firebase.initializeApp(fireBaseConfig);

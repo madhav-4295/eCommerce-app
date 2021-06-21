@@ -1,26 +1,14 @@
-.signin{
-    display: block;
-    width: 100%;
-    max-width: 40.0rem;
-    margin: 4rem auto 6rem;
-    border: 1px solid black;
+.socialSignIn {
+  margin: 1rem auto 0rem;
+}
+.forgotPasswordLink{
+  margin-top: 10px;
+  display: block;
+  width:100%;
 
-    .wrap{
-        padding: 10px;
+  a{
+    color: black;
+    text-decoration: none;
 
-        h2{
-            font-size: 2.2rem;
-            line-height: 1;
-            letter-spacing: 0.15rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            text-align: center;
-            margin: 0 auto;
-            padding: 0;
-            display: block;
-        }
-        .socialSignIn{
-            margin: 1rem auto 0rem;
-        }
-    }
+  }
 }
