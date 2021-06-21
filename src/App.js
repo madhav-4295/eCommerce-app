@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import MainLayout from "./../src/Layouts/mainLayout";
 import HomePage from "./Pages/HomePage";
 import Registeration from "./Pages/Registeration";
+import Recovery from "./Pages/Recovery"
 import Login from "./Pages/LoginPage";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { auth, handleUserProfile } from "./Firebase/utils";
@@ -87,6 +88,11 @@ class App extends Component {
               )
             }
           />
+          < Route path="/Recovery" render={() =>(
+            <MainLayout>
+              <Recovery />
+            </MainLayout>
+          )}/>
         </Switch>
       </div>
     );

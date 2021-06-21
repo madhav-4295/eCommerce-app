@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./styles.scss";
 import FormInputs from "./../Forms/FormInputs";
 import Button from "./../Forms/Button";
+import AuthWrapper from "./../AuthWrapper"
 import { auth, handleUserProfile } from "./../../Firebase/utils";
 
 const initialState = {
@@ -63,12 +64,12 @@ class SignUp extends Component {
       confirmPassword,
       errors,
     } = this.state;
+    const configAuthWrap = {
+      headline: "Registeration"
+    }
     return (
-      <div className="signup">
-        <div className="wrap">
-          <h2>signup</h2>
-
-          <div className="formWrap">
+      <AuthWrapper {... configAuthWrap}>
+                  <div className="formWrap">
             <form onSubmit={this.handleSubmit}>
               <FormInputs
                 type="text"
@@ -102,8 +103,8 @@ class SignUp extends Component {
               {/* error display */}
               {errors.length > 0 && (
                 <ul>
-                  {errors.map((err) => {
-                    return <li>{err}</li>;
+                  {errors.map((err,index) => {
+                    return <li key={index}>{err}</li>;
                   })}
                 </ul>
               )}
@@ -111,8 +112,11 @@ class SignUp extends Component {
               <Button type="submit">Register</Button>
             </form>
           </div>
-        </div>
-      </div>
+
+      </AuthWrapper>
+
+      //   </div>
+      // </div>
     );
   }
 }

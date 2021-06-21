@@ -8,23 +8,25 @@
         max-width: 1450px;
         margin: 0 auto;
         // background-color:rgb(161, 56, 56);
+
+        .logo{
+            // background-color: green;
+            width: 13.0rem;
+            height: 7.5rem;
+            position: absolute;
+            top: -12%;
+            left: 10px;
+            bottom: -12%;
+            transform: translateY(50%);
+            transform: translateX(50%);
+        }
+        img{
+            width: 100px;
+            display: block;
+            height: 90px;
+        }
     }
-    .logo{
-        // background-color: green;
-        width: 13.0rem;
-        height: 7.5rem;
-        position: absolute;
-        top: -12%;
-        left: 10px;
-        bottom: -12%;
-        transform: translateY(50%);
-        transform: translateX(50%);
-    }
-    img{
-        width: 100px;
-        display: block;
-        height: 90px;
-    }
+    
     .callToAction{
         position: absolute;
         top: 50%;
