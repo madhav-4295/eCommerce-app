@@ -45,7 +45,7 @@ class EmailPassword extends Component {
 
       } catch(err){
           console.log(err)
-          this.setState({errors:[err.message]})
+          // this.setState({errors:[err.message]})
       }
 
   };

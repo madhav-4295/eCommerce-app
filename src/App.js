@@ -1,44 +1,40 @@
 import React, { Component } from "react";
-// import Header from "./Components/Header";
-import MainLayout from "./../src/Layouts/mainLayout";
-import HomePage from "./Pages/HomePage";
-import Registeration from "./Pages/Registeration";
-import Recovery from "./Pages/Recovery"
-import Login from "./Pages/LoginPage";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { auth, handleUserProfile } from "./Firebase/utils";
+import { connect } from "react-redux";
+
+//styles
 import "./default.scss";
 
-//initial user state
-const intialState = {
-  currentUser: null,
-};
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ...intialState,
-    };
-  }
+// import Header from "./Components/Header";
 
+//layout
+import MainLayout from "./../src/Layouts/mainLayout";
+
+//Pages
+import HomePage from "./Pages/HomePage";
+import Registeration from "./Pages/Registeration";
+import Recovery from "./Pages/Recovery";
+import Login from "./Pages/LoginPage";
+
+//Redux
+
+import { setCurrentUser } from "./Redux/User/userActions";
+
+class App extends Component {
   //eventListener
   authListener = null;
   componentDidMount() {
-    this.authListener = auth.onAuthStateChanged( async userAuth=> {
+    this.authListener = auth.onAuthStateChanged(async (userAuth) => {
       //when user is not logged in
-      if(userAuth){
-       const userRef = await handleUserProfile(userAuth);
-        
-        userRef.onSnapshot(snapshot=>{
-          this.setState({currentUser: {
-            id: snapshot.id,
-            ...snapshot.data()
-          }})
-        })
+      if (userAuth) {
+        const userRef = await handleUserProfile(userAuth);
+
+        userRef.onSnapshot((snapshot) => {
+          this.props.setCurrentUser({ id: snapshot.id, ...snapshot.data() });
+        });
       }
-      this.setState({
-        ...intialState
-      })
+      this.props.setCurrentUser(userAuth);
     });
   }
 
@@ -49,7 +45,7 @@ class App extends Component {
 
   render() {
     //destrcuture current user form state
-    const { currentUser } = this.state;
+    const { currentUser } = this.props;
     return (
       <div className="App">
         {/* <Header /> */}
@@ -60,7 +56,7 @@ class App extends Component {
             path="/"
             exact
             render={() => (
-              <MainLayout currentUser={currentUser}>
+              <MainLayout>
                 <HomePage />
               </MainLayout>
             )}
@@ -71,10 +67,11 @@ class App extends Component {
               currentUser ? (
                 <Redirect to="/" />
               ) : (
-              <MainLayout currentUser={currentUser}>
-                <Registeration />
-              </MainLayout>
-            )}
+                <MainLayout>
+                  <Registeration />
+                </MainLayout>
+              )
+            }
           />
           <Route
             path="/Login"
@@ -82,21 +79,31 @@ class App extends Component {
               currentUser ? (
                 <Redirect to="/" />
               ) : (
-                <MainLayout currentUser={currentUser}>
+                <MainLayout>
                   <Login />
                 </MainLayout>
               )
             }
           />
-          < Route path="/Recovery" render={() =>(
-            <MainLayout>
-              <Recovery />
-            </MainLayout>
-          )}/>
+          <Route
+            path="/Recovery"
+            render={() => (
+              <MainLayout>
+                <Recovery />
+              </MainLayout>
+            )}
+          />
         </Switch>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(App);
