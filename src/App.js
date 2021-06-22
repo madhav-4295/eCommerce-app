@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { auth, handleUserProfile } from "./Firebase/utils";
 import { connect } from "react-redux";
@@ -16,88 +16,101 @@ import HomePage from "./Pages/HomePage";
 import Registeration from "./Pages/Registeration";
 import Recovery from "./Pages/Recovery";
 import Login from "./Pages/LoginPage";
+import Dashboard from "./Pages/Dashboard";
+
+//HOC
+import WithAuth from "./Hoc/withAuth";
 
 //Redux
 
 import { setCurrentUser } from "./Redux/User/userActions";
 
-class App extends Component {
-  //eventListener
-  authListener = null;
-  componentDidMount() {
-    this.authListener = auth.onAuthStateChanged(async (userAuth) => {
+const App = (props) => {
+  useEffect(() => {
+    //eventListener
+
+    const authListener = auth.onAuthStateChanged(async (userAuth) => {
       //when user is not logged in
       if (userAuth) {
         const userRef = await handleUserProfile(userAuth);
 
         userRef.onSnapshot((snapshot) => {
-          this.props.setCurrentUser({ id: snapshot.id, ...snapshot.data() });
+          props.setCurrentUser({ id: snapshot.id, ...snapshot.data() });
         });
       }
-      this.props.setCurrentUser(userAuth);
+      props.setCurrentUser(userAuth);
     });
-  }
+    return () => {
+      authListener();
+    };
+  }, []);
 
   //ensure no memory leaks from app
-  componentWillUnmount() {
-    this.authListener();
-  }
 
-  render() {
-    //destrcuture current user form state
-    const { currentUser } = this.props;
-    return (
-      <div className="App">
-        {/* <Header /> */}
-        {/* centering the content with class */}
-        {/* <div className="main"> */}
-        <Switch>
-          <Route
-            path="/"
-            exact
-            render={() => (
+  //destrcuture current user form state
+  return (
+    <div className="App">
+      {/* <Header /> */}
+      {/* centering the content with class */}
+      {/* <div className="main"> */}
+      <Switch>
+        <Route
+          path="/"
+          exact
+          render={() => (
+            <MainLayout>
+              <HomePage />
+            </MainLayout>
+          )}
+        />
+        <Route
+          path="/Registeration"
+          render={() =>
+            // props.currentUser ? (
+            //   <Redirect to="/" />
+            // ) : 
+            (
               <MainLayout>
-                <HomePage />
+                <Registeration />
               </MainLayout>
-            )}
-          />
-          <Route
-            path="/Registeration"
-            render={() =>
-              currentUser ? (
-                <Redirect to="/" />
-              ) : (
-                <MainLayout>
-                  <Registeration />
-                </MainLayout>
-              )
-            }
-          />
-          <Route
-            path="/Login"
-            render={() =>
-              currentUser ? (
-                <Redirect to="/" />
-              ) : (
-                <MainLayout>
-                  <Login />
-                </MainLayout>
-              )
-            }
-          />
-          <Route
-            path="/Recovery"
-            render={() => (
+            )
+          }
+        />
+        <Route
+          path="/Login"
+          render={() =>
+            // props.currentUser ? (
+            //   <Redirect to="/" />
+            // ) : 
+            (
               <MainLayout>
-                <Recovery />
+                <Login />
               </MainLayout>
-            )}
-          />
-        </Switch>
-      </div>
-    );
-  }
-}
+            )
+          }
+        />
+        <Route
+          path="/Recovery"
+          render={() => (
+            <MainLayout>
+              <Recovery />
+            </MainLayout>
+          )}
+        />
+        <Route
+          path="/Dashboard"
+          render={() => (
+            <WithAuth>
+              <MainLayout>
+                <Dashboard />
+              </MainLayout>
+            </WithAuth>
+          )}
+        />
+      </Switch>
+    </div>
+  );
+};
 
 const mapStateToProps = ({ user }) => ({
   currentUser: user.currentUser,
