@@ -2,8 +2,8 @@ import React from "react";
 import "./styles.scss";
 import { Link } from "react-router-dom";
 import Logo from "../../Assets/logo.png";
-import {auth} from "./../../Firebase/utils"
-import {connect} from "react-redux"
+import { auth } from "./../../Firebase/utils";
+import { connect } from "react-redux";
 
 const Header = (props) => {
   //destructure user props passed
@@ -22,7 +22,11 @@ const Header = (props) => {
           {currentUser && (
             <ul>
               <li>
-                <Link onClick={()=>auth.signOut()}>Logout</Link> 
+                <Link to="/Dashboard">My Account</Link>
+              </li>
+
+              <li>
+                <Link onClick={() => auth.signOut()}>Logout</Link>
                 {/* this wont directly update the state of our current user, hence in app.js restore 
                     the current user state to initila state i.e. null*/}
               </li>
@@ -47,7 +51,7 @@ const Header = (props) => {
 Header.defaultProps = {
   currentUser: null,
 };
-const mapStateToProps = ({user}) =>({
-  currentUser: user.currentUser
-})
-export default connect(mapStateToProps,null)(Header);
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser,
+});
+export default connect(mapStateToProps, null)(Header);
