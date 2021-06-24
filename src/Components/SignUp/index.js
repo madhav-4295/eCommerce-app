@@ -1,17 +1,46 @@
-import React, { useState } from "react";
-import {withRouter} from "react-router-dom"
+import React, { useState, useEffect} from "react";
+import {withRouter, useHistory} from "react-router-dom"
 import "./styles.scss";
 import FormInputs from "./../Forms/FormInputs";
 import Button from "./../Forms/Button";
 import AuthWrapper from "./../AuthWrapper";
-import { auth, handleUserProfile } from "./../../Firebase/utils";
+// import { auth, handleUserProfile } from "./../../Firebase/utils";
+import {signUpUser} from "./../../Redux/User/userActions"
+import {useDispatch, useSelector} from "react-redux";
+
+const mapState = ({ user }) => ({
+  currentUser: user.currentUser,
+  signUpSuccess: user.signUpSuccess,
+  signUpError: user.signUpError
+})
+
+
+
 
 const SignUp = (props) => {
+  const dispatch  = useDispatch()
+  const history = useHistory()
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
+  const {currentUser, signUpSuccess, signUpError} = useSelector(mapState)
+
+  useEffect(() => {
+    if(currentUser){
+      resetForm()
+
+      history.push("/")
+    }
+  },[currentUser])
+
+
+  useEffect(() => {
+    if(Array.isArray(signUpError) && signUpError.length > 0){
+      setErrors(signUpError)
+    }
+  },[signUpError])
 
   const resetForm = () => {
     setDisplayName("");
@@ -24,28 +53,30 @@ const SignUp = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      const err = ["Password does not match"];
-      setErrors(err);
-      return;
-    }
-    try {
-      // destructure user object from response
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-      console.log("userr==>", user);
+    dispatch(signUpUser({displayName, email, password, confirmPassword}))
 
-      await handleUserProfile(user, { displayName });
+  //   if (password !== confirmPassword) {
+  //     const err = ["Password does not match"];
+  //     setErrors(err);
+  //     return;
+  //   }
+  //   try {
+  //     // destructure user object from response
+  //     const { user } = await auth.createUserWithEmailAndPassword(
+  //       email,
+  //       password
+  //     );
+  //     console.log("userr==>", user);
 
-      props.history.push('/')
+  //     await handleUserProfile(user, { displayName });
 
-      resetForm();
-    } catch (err) {
-      const err1 = [err.message];
-      setErrors(err1);
-    }
+  //     props.history.push('/')
+
+  //     resetForm();
+  //   } catch (err) {
+  //     const err1 = [err.message];
+  //     setErrors(err1);
+  //   }
   };
   const configAuthWrap = {
     headline: "Registeration",

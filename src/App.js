@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { auth, handleUserProfile } from "./Firebase/utils";
-import { connect } from "react-redux";
+import { useSelector, useDispatch} from "react-redux";
 
 //styles
 import "./default.scss";
@@ -26,6 +26,7 @@ import WithAuth from "./Hoc/withAuth";
 import { setCurrentUser } from "./Redux/User/userActions";
 
 const App = (props) => {
+  const dispatch = useDispatch()
   useEffect(() => {
     //eventListener
 
@@ -35,19 +36,19 @@ const App = (props) => {
         const userRef = await handleUserProfile(userAuth);
 
         userRef.onSnapshot((snapshot) => {
-          props.setCurrentUser({ id: snapshot.id, ...snapshot.data() });
+          dispatch(setCurrentUser({ id: snapshot.id, ...snapshot.data() }));
         });
       }
-      props.setCurrentUser(userAuth);
+      dispatch(setCurrentUser(userAuth));
     });
     return () => {
+        //ensure no memory leaks from app
+
       authListener();
     };
   }, []);
 
-  //ensure no memory leaks from app
 
-  //destrcuture current user form state
   return (
     <div className="App">
       {/* <Header /> */}
@@ -66,9 +67,6 @@ const App = (props) => {
         <Route
           path="/Registeration"
           render={() =>
-            // props.currentUser ? (
-            //   <Redirect to="/" />
-            // ) : 
             (
               <MainLayout>
                 <Registeration />
@@ -79,9 +77,6 @@ const App = (props) => {
         <Route
           path="/Login"
           render={() =>
-            // props.currentUser ? (
-            //   <Redirect to="/" />
-            // ) : 
             (
               <MainLayout>
                 <Login />
@@ -112,11 +107,5 @@ const App = (props) => {
   );
 };
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser,
-});
 
-const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
