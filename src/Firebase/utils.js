@@ -12,15 +12,15 @@ export const firestore = firebase.firestore();
 
 // custom provider for google. Creating new insatnce of firebase.auth.GoogleAuthProvider()
 // use "new" keyword
-const googleProvider = new firebase.auth.GoogleAuthProvider();
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 //setting custom params
 googleProvider.setCustomParameters({ prompt: "select_account" });
 
-//utility function  that will be called when clicked on sign-in with google button
-export const signInWithGoogle = () => {
-  auth.signInWithPopup(googleProvider);
-};
+// //utility function  that will be called when clicked on sign-in with google button
+// export const signInWithGoogle = () => {
+//   auth.signInWithPopup(googleProvider);
+// };
 
 //function that will handle user profile
 

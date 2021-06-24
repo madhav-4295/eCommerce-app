@@ -3,11 +3,17 @@ import "./styles.scss";
 import { Link } from "react-router-dom";
 import Logo from "../../Assets/logo.png";
 import { auth } from "./../../Firebase/utils";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
+
+
+const mapState= ({ user }) => ({
+  currentUser: user.currentUser,
+});
 
 const Header = (props) => {
   //destructure user props passed
-  const { currentUser } = props;
+  const { currentUser } = useSelector(mapState);
+  console.log(currentUser,"header file");
   return (
     <header className="header">
       <div className="wrapper">
@@ -26,7 +32,7 @@ const Header = (props) => {
               </li>
 
               <li>
-                <Link onClick={() => auth.signOut()}>Logout</Link>
+                <Link to="/" onClick={() => auth.signOut()}>Logout</Link>
                 {/* this wont directly update the state of our current user, hence in app.js restore 
                     the current user state to initila state i.e. null*/}
               </li>
@@ -51,7 +57,4 @@ const Header = (props) => {
 Header.defaultProps = {
   currentUser: null,
 };
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser,
-});
-export default connect(mapStateToProps, null)(Header);
+export default Header;
