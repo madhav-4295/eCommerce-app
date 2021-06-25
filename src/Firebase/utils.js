@@ -24,7 +24,7 @@ googleProvider.setCustomParameters({ prompt: "select_account" });
 
 //function that will handle user profile
 
-export const handleUserProfile = async (userAuth, additionalData) => {
+export const handleUserProfile = async ({userAuth, additionalData}) => {
   if (!userAuth) return;
 
   const { uid } = userAuth;
@@ -53,3 +53,14 @@ export const handleUserProfile = async (userAuth, additionalData) => {
 
   return userRef;
 };
+
+
+//check user session 
+export const getCurrentUser=()=>{
+  return new Promise((resolve, reject)=>{
+    const unsubscribe = auth.onAuthStateChanged(userAuth=>{
+      unsubscribe()
+      resolve(userAuth)
+    },reject)
+  })
+}

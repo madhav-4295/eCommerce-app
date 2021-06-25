@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { auth, handleUserProfile } from "./Firebase/utils";
-import { useSelector, useDispatch} from "react-redux";
+import { Route, Switch } from "react-router-dom";
+import {  useDispatch} from "react-redux";
 
 //styles
 import "./default.scss";
-
-// import Header from "./Components/Header";
-
 //layout
 import MainLayout from "./../src/Layouts/mainLayout";
 
@@ -23,29 +19,15 @@ import WithAuth from "./Hoc/withAuth";
 
 //Redux
 
-import { setCurrentUser } from "./Redux/User/userActions";
+import { checkUserSession } from "./Redux/User/userActions";
 
 const App = (props) => {
   const dispatch = useDispatch()
   useEffect(() => {
     //eventListener
 
-    const authListener = auth.onAuthStateChanged(async (userAuth) => {
-      //when user is not logged in
-      if (userAuth) {
-        const userRef = await handleUserProfile(userAuth);
+    dispatch(checkUserSession())
 
-        userRef.onSnapshot((snapshot) => {
-          dispatch(setCurrentUser({ id: snapshot.id, ...snapshot.data() }));
-        });
-      }
-      dispatch(setCurrentUser(userAuth));
-    });
-    return () => {
-        //ensure no memory leaks from app
-
-      authListener();
-    };
   }, []);
 
 

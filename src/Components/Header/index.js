@@ -2,8 +2,8 @@ import React from "react";
 import "./styles.scss";
 import { Link } from "react-router-dom";
 import Logo from "../../Assets/logo.png";
-import { auth } from "./../../Firebase/utils";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import {signOutUserStart} from "./../../Redux/User/userActions"
 
 
 const mapState= ({ user }) => ({
@@ -11,9 +11,14 @@ const mapState= ({ user }) => ({
 });
 
 const Header = (props) => {
+  const dispatch = useDispatch()
   //destructure user props passed
   const { currentUser } = useSelector(mapState);
   console.log(currentUser,"header file");
+
+  const signOut = ()=>{
+    dispatch(signOutUserStart())
+  }
   return (
     <header className="header">
       <div className="wrapper">
@@ -32,7 +37,7 @@ const Header = (props) => {
               </li>
 
               <li>
-                <Link to="/" onClick={() => auth.signOut()}>Logout</Link>
+                <Link to="/" onClick={() => signOut()}>Logout</Link>
                 {/* this wont directly update the state of our current user, hence in app.js restore 
                     the current user state to initila state i.e. null*/}
               </li>

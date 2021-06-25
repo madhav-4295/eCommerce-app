@@ -3,15 +3,14 @@ import React, { useState,useEffect } from "react";
 import AuthWrapper from "./../AuthWrapper";
 import FormInputs from "./../Forms/FormInputs";
 import Button from "./../Forms/Button";
-// import { auth } from "./../../Firebase/utils";
-import { withRouter, useHistory } from "react-router-dom";
-import {forgetPassword, resetAuthForm} from "./../../Redux/User/userActions"
+import {  useHistory } from "react-router-dom";
+import {resetPasswordStart,resetUserState} from "./../../Redux/User/userActions"
 import {useDispatch, useSelector} from "react-redux";
 
 
 const mapState = ({user}) =>({
   resetPasswordSuccess: user.resetPasswordSuccess,
-  resetPasswordError: user.resetPasswordError
+  userError: user.userError
 })
 
 const EmailPassword = (props) => {
@@ -20,11 +19,12 @@ const EmailPassword = (props) => {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState([]);
 
-  const {resetPasswordError, resetPasswordSuccess} = useSelector(mapState)
+  const {userError, resetPasswordSuccess} = useSelector(mapState)
 
   useEffect(()=>{
     if(resetPasswordSuccess){
-      dispatch(resetAuthForm())
+      // dispatch(resetAuthForm())
+      dispatch(resetUserState())
       resetForm()
       history.push("/Login")
     }
@@ -37,18 +37,17 @@ const EmailPassword = (props) => {
 
 
   useEffect(()=>{
-    if(Array.isArray(resetPasswordError) && resetPasswordError.length>0 ){
-      setErrors(resetPasswordError)
+    if(Array.isArray(userError) && userError.length>0 ){
+      setErrors(userError)
     }
-  },[resetPasswordError])
+  },[userError])
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(forgetPassword({email}))
+    dispatch(resetPasswordStart({email}))
 
-    console.log(errors, resetPasswordError)
 
     // try {
     //   //redirect user to login page after reseting the password
@@ -100,4 +99,4 @@ const EmailPassword = (props) => {
   );
 };
 
-export default withRouter(EmailPassword);
+export default EmailPassword;

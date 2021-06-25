@@ -4,15 +4,13 @@ import {useDispatch, useSelector} from "react-redux";
 import "./styles.scss";
 import Button from "./../Forms/Button";
 import FormInputs from "./../Forms/FormInputs";
-// import {  handleUserProfile } from "./../../Firebase/utils";
 import AuthWrapper from "./../AuthWrapper";
-// import { signInWithGoogle } from "./../../Firebase/utils";
-import { Link, withRouter , useHistory} from "react-router-dom";
-import {signInUser, signInWithGoogle} from "./../../Redux/User/userActions"
+import { Link , useHistory} from "react-router-dom";
+import {emailSignInStart, googleSignInStart} from "./../../Redux/User/userActions"
 
 const mapState = ({ user }) => ({
   currentUser: user.currentUser,
-  signInSuccess: user.signInSuccess
+  userError: user.userError
 })
 const SignIn = (props) => {
   const dispatch  = useDispatch()
@@ -20,7 +18,7 @@ const SignIn = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
-  const {currentUser, signInSuccess} = useSelector(mapState)
+  const {currentUser, userError} = useSelector(mapState)
 
   useEffect(() => {
     if(currentUser){
@@ -29,6 +27,12 @@ const SignIn = (props) => {
       history.push("/")
     }
   },[currentUser])
+  useEffect(() => {
+    if(Array.isArray(userError) && userError.length > 0){
+      setErrors(userError)
+    }
+  },[userError])
+
   const resetForm = () => {
     setEmail("");
     setPassword("");
@@ -38,25 +42,12 @@ const SignIn = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(signInUser({email, password}))
-
-  //   try {
-  //     // destructure user object from response
-  //     const { user } = await auth.signInWithEmailAndPassword(email, password);
-  //     console.log("userr==>", user);
-  //     props.history.push('/')
-
-  //     resetForm();
-  //   } catch (err) {
-  //     console.error(err);
-  //     const err1 = ["Password is invalid"];
-  //     setErrors([err1]);
-  //   }
+    dispatch(emailSignInStart({email, password}))
   };
 
 
 const handleGoogleSignIn = () =>{
-  dispatch(signInWithGoogle())
+  dispatch(googleSignInStart())
 }
   const configAuthWrap = {
     headline: "Login",
@@ -104,4 +95,4 @@ const handleGoogleSignIn = () =>{
   );
 };
 
-export default withRouter(SignIn);
+export default SignIn;
