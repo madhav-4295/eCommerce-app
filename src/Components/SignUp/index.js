@@ -1,17 +1,15 @@
 import React, { useState, useEffect} from "react";
-import {withRouter, useHistory} from "react-router-dom"
+import {useHistory} from "react-router-dom"
 import "./styles.scss";
 import FormInputs from "./../Forms/FormInputs";
 import Button from "./../Forms/Button";
 import AuthWrapper from "./../AuthWrapper";
-// import { auth, handleUserProfile } from "./../../Firebase/utils";
-import {signUpUser} from "./../../Redux/User/userActions"
+import {signUpUserStart} from "./../../Redux/User/userActions"
 import {useDispatch, useSelector} from "react-redux";
 
 const mapState = ({ user }) => ({
   currentUser: user.currentUser,
-  signUpSuccess: user.signUpSuccess,
-  signUpError: user.signUpError
+  userError: user.userError
 })
 
 
@@ -25,7 +23,7 @@ const SignUp = (props) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
-  const {currentUser, signUpSuccess, signUpError} = useSelector(mapState)
+  const {currentUser, userError} = useSelector(mapState)
 
   useEffect(() => {
     if(currentUser){
@@ -37,10 +35,10 @@ const SignUp = (props) => {
 
 
   useEffect(() => {
-    if(Array.isArray(signUpError) && signUpError.length > 0){
-      setErrors(signUpError)
+    if(Array.isArray(userError) && userError.length > 0){
+      setErrors(userError)
     }
-  },[signUpError])
+  },[userError])
 
   const resetForm = () => {
     setDisplayName("");
@@ -52,31 +50,9 @@ const SignUp = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(userError)
+    dispatch(signUpUserStart({displayName, email, password, confirmPassword}))
 
-    dispatch(signUpUser({displayName, email, password, confirmPassword}))
-
-  //   if (password !== confirmPassword) {
-  //     const err = ["Password does not match"];
-  //     setErrors(err);
-  //     return;
-  //   }
-  //   try {
-  //     // destructure user object from response
-  //     const { user } = await auth.createUserWithEmailAndPassword(
-  //       email,
-  //       password
-  //     );
-  //     console.log("userr==>", user);
-
-  //     await handleUserProfile(user, { displayName });
-
-  //     props.history.push('/')
-
-  //     resetForm();
-  //   } catch (err) {
-  //     const err1 = [err.message];
-  //     setErrors(err1);
-  //   }
   };
   const configAuthWrap = {
     headline: "Registeration",
@@ -130,4 +106,4 @@ const SignUp = (props) => {
   );
 };
 
-export default withRouter(SignUp);
+export default SignUp;
