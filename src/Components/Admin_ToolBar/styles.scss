@@ -1,0 +1,39 @@
+.admin-toolbar {
+  display: inline-block;
+  height: auto;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 10px;
+  background-color: black;
+
+  ul,
+  li {
+    list-style-type: none;
+    margin: 2px;
+    padding: 0;
+  }
+  ul {
+    float: right;
+
+    li {
+      display: inline-block;
+
+      a {
+        display: block;
+        font-size: 1.6rem;
+        line-height: 1;
+        color: white;
+        padding: 12px;
+        transition: all 0.4s ease-in-out;
+        border-radius: 10px;
+
+        &:hover{
+            background-color: rgba(255,255,255,.6);
+            color:black;
+            transition: all 0.4s ease-in-out;
+
+        }
+      }
+    }
+  }
+}
